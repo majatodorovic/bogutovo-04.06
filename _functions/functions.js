@@ -42,12 +42,12 @@ export const generateProductSchema = (product, product_gallery, canonical) => {
         },
       },
     } = product;
-    const { gallery } = product_gallery;
+
     return {
       "@context": "https://schema.org/",
       "@type": "Product",
       name: name,
-      image: gallery?.[0]?.image,
+      image: product_gallery?.[0]?.image_data?.url,
       sku: sku,
       offers: {
         "@type": "Offer",

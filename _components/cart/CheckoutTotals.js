@@ -1,10 +1,32 @@
 import { currencyFormat } from "@/_helpers/functions";
 
-const CheckoutTotals = ({ className, totals }) => {
-  console.log("TOTALS:", totals); // <<< dodaj ovo
+const CheckoutTotals = ({ className, totals, summary }) => {
   return (
     <div className={`flex flex-col pl-2`}>
-      <div className={`flex items-center justify-between py-2`}>
+      {summary?.use_vat && (
+        <>
+          <div className={`flex items-center justify-between py-2`}>
+            <p className={`${className} text-[0.965rem] font-normal`}>
+              Ukupna vrednost korpe bez PDV-a:
+            </p>
+            <p className={`${className} text-[1rem] font-light`}>
+              {currencyFormat(totals?.with_out_vat)}
+            </p>
+          </div>
+          <div
+            className={`flex items-center justify-between border-t border-t-white py-2`}
+          >
+            <p className={`${className} text-[0.965rem] font-normal`}>PDV:</p>
+            <p className={`${className} text-[1rem] font-light`}>
+              {currencyFormat(totals?.vat)}
+            </p>
+          </div>
+        </>
+      )}
+
+      <div
+        className={`flex items-center justify-between py-2 ${summary?.use_vat && "border-t border-t-white"}  `}
+      >
         <p className={`${className} text-[0.965rem] font-normal`}>
           Ukupna vrednost korpe:
         </p>

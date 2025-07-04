@@ -13,7 +13,6 @@ export const CheckoutPage = ({
   className,
 }) => {
   const [token, setToken] = useState();
-console.log("token",token)
   const verifyCaptcha = useCallback((token) => {
     setToken(token);
   }, []);
@@ -80,9 +79,6 @@ console.log("token",token)
 
   //fetchujemo summary korpe (iznos,popuste,dostavu itd)
   const { data, refetch: refreshSummary } = useSummary({
-    items: items?.items?.map((item) => {
-      return Number(item?.cart?.quantity);
-    }),
     formData: formData,
   });
 

@@ -1,6 +1,14 @@
 import { Layout } from "@/_components/ui/layout";
 import Link from "next/link";
 import Image from "next/image";
+import Image1 from "@/assets/Icons/payments/master.png";
+import Image2 from "@/assets/Icons/payments/visa.webp";
+import Image3 from "@/assets/Icons/payments/otpbank.webp";
+import Image4 from "@/assets/Icons/payments/img1.webp";
+import Image5 from "@/assets/Icons/payments/img.webp";
+import Image6 from "@/assets/Icons/payments/img3.webp";
+import Image7 from "@/assets/Icons/payments/img4.webp";
+import Image8 from "@/assets/Icons/payments/american.webp";
 
 export const Footer = () => {
   const delivery_images = [
@@ -12,7 +20,7 @@ export const Footer = () => {
 
   return (
     <>
-      <div className={`py-[2rem] md:py-[4.375rem] bg-boa-dark-blue`}>
+      <div className={`pb-12 pt-[2rem] md:pt-[4.375rem] bg-boa-dark-blue`}>
         <Layout>
           <div className={`grid grid-cols-6 gap-10 md:gap-20`}>
             <div className={`col-span-3 md:col-span-1`}>
@@ -151,31 +159,89 @@ export const Footer = () => {
               </div>
             </div>
           </div>
-          <div
-            className={`flex flex-col md:flex-row items-start max-md:gap-5 md:items-center justify-between pt-[2rem]`}
-          >
-            {/*<SelectCountry />*/}
-            <div
-              className={`flex flex-col ml-auto md:flex-row items-start gap-5 md:gap-10`}
-            >
-              {/*<div className={`flex flex-col gap-1`}>*/}
-              {/*  <p className={`font-light text-white`}>*/}
-              {/*    Prihvaćeni načini plaćanja*/}
-              {/*  </p>*/}
-              {/*  <div className={`flex items-center space-x-1`}>*/}
-              {/*    {payment_images?.map(({ id, src }) => {*/}
-              {/*      return (*/}
-              {/*        <Image*/}
-              {/*          src={src}*/}
-              {/*          alt={`Bogutovo`}*/}
-              {/*          width={40}*/}
-              {/*          height={50}*/}
-              {/*          key={`payment-${id}`}*/}
-              {/*        />*/}
-              {/*      );*/}
-              {/*    })}*/}
-              {/*  </div>*/}
-              {/*</div>*/}
+          <div className="flex mt-12 flex-col max-md:mt-6 gap-[1.25rem] items-start">
+            <div className="flex items-center gap-1 bg-white px-3 py-1 rounded-md">
+              <div>
+                <a
+                  href={`http://www.mastercard.com/rs/consumer/credit-cards.html`}
+                  rel={"noreferrer"}
+                  target={"_blank"}
+                >
+                  <Image
+                    src={Image1}
+                    width={50}
+                    height={30}
+                    alt="Master Card"
+                    className="object-scale-down"
+                  />
+                </a>
+              </div>
+              <div>
+                <a
+                  href={`https://rs.visa.com/pay-with-visa/security-and-assistance/protected-everywhere.html`}
+                  rel={"noreferrer"}
+                  target={"_blank"}
+                >
+                  <Image
+                    src={Image2}
+                    width={50}
+                    height={30}
+                    alt="Master Card"
+                    className="object-scale-down"
+                  />
+                </a>
+              </div>
+              <div>
+                <a
+                  href={`https://www.otpbanka.rs`}
+                  rel={"noreferrer"}
+                  target={"_blank"}
+                >
+                  <Image
+                    src={Image3}
+                    width={140}
+                    height={50}
+                    alt="Master Card"
+                    className="object-scale-down"
+                  />
+                </a>
+              </div>
+              <div>
+                <Image
+                  src={Image4}
+                  width={50}
+                  height={30}
+                  alt="Master Card"
+                  className="object-scale-down"
+                />
+              </div>
+              <div>
+                <Image
+                  src={Image5}
+                  width={50}
+                  height={30}
+                  alt="Master Card"
+                  className="object-scale-down"
+                />
+              </div>
+              <div>
+                <Image
+                  src={Image6}
+                  width={50}
+                  height={30}
+                  alt="Master Card"
+                  className="object-scale-down"
+                />
+              </div>
+              <div>
+                <Image
+                  src={Image7}
+                  width={50}
+                  height={30}
+                  alt="Master Card"
+                  className="object-scale-down"
+                />
+              </div>
             </div>
           </div>
         </Layout>

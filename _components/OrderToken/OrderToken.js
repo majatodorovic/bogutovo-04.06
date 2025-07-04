@@ -91,16 +91,19 @@ const Success = ({
               }) => {
                 return (
                   <div key={id} className={`col-span-1`}>
-                    <Link href={`/${relative_link}`}>
-                      <Image
-                        src={image}
-                        alt={`${name} - ${slug}`}
-                        width={0}
-                        height={0}
-                        sizes={`90vw`}
-                        className={`w-full`}
-                      />
-                    </Link>
+                    {image && relative_link && (
+                      <Link href={`/${relative_link}`}>
+                        <Image
+                          src={image}
+                          alt={`${name} - ${slug}`}
+                          width={0}
+                          height={0}
+                          sizes={`90vw`}
+                          className={`w-full`}
+                        />
+                      </Link>
+                    )}
+
                     <h2
                       className={`mt-2 ${className} text-center text-base font-light`}
                     >

@@ -10,13 +10,14 @@ import { FreeMode, Pagination, Thumbs, Zoom } from "swiper/modules";
 import Image from "next/image";
 import { convertHttpToHttps } from "@/_helpers";
 import { useSearchParams } from "next/navigation";
-import { useProduct, useProductGallery } from "@/_hooks";
+import { useProduct, useProductGallery, useProductStickers } from "@/_hooks";
 import { icons } from "@/_lib/icons";
 import { DiscountStickers } from "@/_components/shared/prices";
 
 export const Gallery = ({ slug }) => {
   const [loading, setLoading] = useState(false);
   const { data: productGallery } = useProductGallery({ slug });
+  const { data: productStickers } = useProductStickers({ id: slug });
   const { data: product } = useProduct({ slug });
   const [gallery, setGallery] = useState(productGallery);
 
@@ -46,6 +47,31 @@ export const Gallery = ({ slug }) => {
         className="h-full w-full object-cover"
         onClick={onClick}
       >
+        {productStickers && productStickers.length > 0 && (
+          <div className="absolute flex flex-row justify-end w-full top-1 right-1">
+            {productStickers.map((sticker, index) => {
+              if (sticker?.image) {
+                return (
+                  <Image
+                    src={sticker?.image}
+                    alt={sticker?.title}
+                    className={`z-10 w-12 object-cover ml-2 `}
+                    width={0}
+                    height={0}
+                    key={index}
+                  />
+                );
+              } else {
+                return (
+                  <div className={`bg-[#e30613] px-2.5 py-0.5`}>
+                    <p className={`text-white`}>{sticker?.name}</p>
+                  </div>
+                );
+              }
+            })}
+          </div>
+        )}
+
         <Image
           src={src}
           width={0}
@@ -119,7 +145,7 @@ export const Gallery = ({ slug }) => {
     return (
       <SwiperSlide key={index} className="w-full relative">
         <ImageMagnifier
-          src={convertHttpToHttps(image?.image)}
+          src={convertHttpToHttps(image?.image_data?.url)}
           alt={image?.image_data?.descriptions?.alt ?? "Bogutovo"}
           onClick={() => {
             setModalImage(image?.image);
@@ -133,7 +159,7 @@ export const Gallery = ({ slug }) => {
     return (
       <SwiperSlide key={index} className={`!overflow-hidden !aspect-square`}>
         <Image
-          src={convertHttpToHttps(image?.image)}
+          src={convertHttpToHttps(image?.image_data?.url)}
           alt={`${image?.image_data?.descriptions?.alt ?? "Bogutovo"}`}
           width={0}
           height={0}
@@ -154,7 +180,7 @@ export const Gallery = ({ slug }) => {
         item?.variant_key?.includes(color),
       );
       const nonVariantImages = productGallery?.filter(
-        (item) => item?.variant_key_array?.length === 0,
+        (item) => item?.variants?.length === 0,
       );
 
       setGallery([...newImages, ...nonVariantImages]);
@@ -338,7 +364,7 @@ export const Gallery = ({ slug }) => {
                   <SwiperSlide key={index} className="w-full">
                     <div className="swiper-zoom-container">
                       <Image
-                        src={convertHttpToHttps(image?.image) ?? ""}
+                        src={convertHttpToHttps(image?.image_data?.url) ?? ""}
                         alt={`${
                           image?.image_data?.descriptions?.alt ?? "Bogutovo"
                         }`}

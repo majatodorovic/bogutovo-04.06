@@ -14,6 +14,7 @@ import {
   list as LIST,
   get as GET,
   put as PUT,
+  fetch as FETCH,
 } from "@/_api/api";
 import { toast } from "react-toastify";
 import { useCartContext, userContext } from "@/_providers";
@@ -752,8 +753,21 @@ export const useProductGallery = ({ slug }) => {
   return useSuspenseQuery({
     queryKey: ["productGallery", { slug: slug }],
     queryFn: async () => {
-      return await GET(`/product-details/gallery/${slug}`).then((res) => {
+      return await FETCH(`/product-details/gallery/${slug}`).then((res) => {
         return res?.payload?.gallery;
+      });
+    },
+    refetchOnWindowFocus: false,
+  });
+};
+
+//hook za dobijanje stikera na detaljnoj strani proizvoda
+export const useProductStickers = ({ id }) => {
+  return useSuspenseQuery({
+    queryKey: ["productGallery", id],
+    queryFn: async () => {
+      return await FETCH(`/product-details/stickers/${id}`).then((res) => {
+        return res?.payload?.stickers;
       });
     },
     refetchOnWindowFocus: false,
@@ -913,13 +927,18 @@ export const useCheckout = ({ formData, setPostErrors, setLoading }) => {
 };
 
 //hook za dobijanje info o cenama,popustima itd u korpi
-export const useSummary = ({ items }) => {
-  return useQuery({
-    queryKey: ["summary", { items: items }],
-    queryFn: async () => {
-      return await GET(`/checkout/summary`).then((res) => res?.payload);
+export const useSummary = ({ formData } = {}) => {
+  return useSuspenseQuery({
+    queryKey: ["summary"],
+    queryFn: async (context) => {
+      const additionalParams = context.meta || {};
+      return await FETCH(`/checkout/summary`, {
+        ...formData,
+        ...additionalParams,
+      }).then((res) => {
+        return res?.payload;
+      });
     },
-    refetchOnWindowFocus: false,
   });
 };
 

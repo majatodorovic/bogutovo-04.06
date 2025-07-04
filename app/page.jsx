@@ -66,7 +66,7 @@ const Home = async () => {
         banners={{
           desktop: banners_desktop,
           mobile: banners_mobile,
-          imageLoading: "eager",
+          imageLoading: "eager",  // Ostavi eager za critical bannere
           imagePriority: true,
         }}
       />
@@ -74,7 +74,7 @@ const Home = async () => {
         <Layout className={`mt-[2rem] md:mt-[6.125rem]`}>
           <Suspense
             fallback={
-              <div className={`h-[15rem] w-full bg-slate-200 animate-pulse`} />
+              <div className={`h-[8rem] w-full bg-slate-200 animate-pulse`} />
             }
           >
             <Slider
@@ -105,7 +105,7 @@ const Home = async () => {
       {recommended_categories?.length > 0 && (
         <Suspense
           fallback={
-            <div className={`h-[15rem] w-full bg-slate-200 animate-pulse`} />
+            <div className={`h-[8rem] w-full bg-slate-200 animate-pulse`} />
           }
         >
           <Slider
@@ -127,13 +127,13 @@ const Home = async () => {
         </Suspense>
       )}
       {featured_banners?.length > 0 && (
-        <div className={`mt-[2rem] md:mt-[6.125rem`}>
+        <div className={`mt-[2rem] md:mt-[6.125rem]`}>
           <Banners
             type={`featured`}
             banners={{
               desktop: featured_banners,
               mobile: featured_banners_mobile,
-              imageLoading: "lazy",
+              imageLoading: "lazy", // lazy za manje bitne bannere
               imagePriority: false,
             }}
           />
@@ -143,7 +143,7 @@ const Home = async () => {
         <Layout className={`mt-[2rem] md:mt-[6.125rem]`}>
           <Suspense
             fallback={
-              <div className={`h-[15rem] w-full bg-slate-200 animate-pulse`} />
+              <div className={`h-[8rem] w-full bg-slate-200 animate-pulse`} />
             }
           >
             <Slider
