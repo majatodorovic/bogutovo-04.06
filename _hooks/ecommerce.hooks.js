@@ -735,7 +735,7 @@ export const useProduct = ({ slug }) => {
 
 //hook za dobijanje thumb-a
 export const useProductThumb = ({ id, categoryId }) => {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: ["productThumb", { id: id }],
     queryFn: async () => {
       return await GET(

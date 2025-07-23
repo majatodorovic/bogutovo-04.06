@@ -329,36 +329,36 @@ export const CheckoutData = ({
         <div
           className={`customScroll mb-[-50px] lg:mb-10  flex max-h-[200px] lg:max-h-[400px] flex-col gap-5 overflow-y-auto`}
         >
-          <div className="hidden lg:block">
-            {(items ?? [])?.map(
-              ({
-                product: {
-                  basic_data: { id_product, name, sku },
-                  price,
-                  inventory,
-                  image,
-                  link: { link_path: slug_path },
-                },
-                cart: { quantity, cart_item_id },
-              }) => (
-                <CheckoutItems
-                  key={id_product}
-                  id={id_product}
-                  image={image}
-                  sku={sku}
-                  inventory={inventory}
-                  slug_path={slug_path}
-                  refreshCart={refreshCart}
-                  name={name}
-                  price={price}
-                  isClosed={isClosed}
-                  refreshSummary={refreshSummary}
-                  quantity={quantity}
-                  cart_item_id={cart_item_id}
-                />
-              ),
-            )}
-          </div>
+            <div className="hidden lg:block">
+          {(items ?? [])?.map(
+            ({
+              product: {
+                basic_data: { id_product, name, sku },
+                price,
+                inventory,
+                image,
+                link: { link_path: slug_path },
+              },
+              cart: { quantity, cart_item_id },
+            }) => (
+              <CheckoutItems
+                key={id_product}
+                id={id_product}
+                image={image}
+                sku={sku}
+                inventory={inventory}
+                slug_path={slug_path}
+                refreshCart={refreshCart}
+                name={name}
+                price={price}
+                isClosed={isClosed}
+                refreshSummary={refreshSummary}
+                quantity={quantity}
+                cart_item_id={cart_item_id}
+              />
+            ),
+          )}
+        </div>
         </div>
         <PromoCode />
         <h2 className="text-xl font-bold ">Vrednost Vaše korpe</h2>
