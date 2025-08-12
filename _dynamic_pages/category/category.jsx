@@ -1,49 +1,33 @@
 import { SingleCategory, CategoryProducts } from "@/_dynamic_pages";
-import { Suspense } from "react";
+import { get as GET } from "@/_api/api";
+import { CategoryLongDescription } from "@/_dynamic_pages/category/category-long-description";
+const getSingleCategory = async (category_id) => {
+  return await GET(`/categories/product/single/${category_id}`).then(
+    (response) => {
+      return response?.payload;
+    },
+  );
+};
 
-export const Category = ({
+export const Category = async ({
   params: { slug_path },
-  searchParams: { sort, filteri, strana },
   category_id,
   base_url,
 }) => {
-  let slug = category_id;
-  const sort_arr = (sort ?? "_")?.split("_");
-  const sortField = sort_arr?.[0];
-  const sortDirection = sort_arr?.[1];
-  const page = Number(strana) > 0 ? Number(strana) : 1;
-
-  const filters = (filteri?.split("::") || []).map((filter) => {
-    const [column, selected] = (filter || "").split("=");
-    const selectedValues = (selected || "").split("_");
-    return {
-      column,
-      value: {
-        selected: selectedValues,
-      },
-    };
-  });
+  const singleCategoryInfo = await getSingleCategory(category_id);
 
   return (
     <>
-      <Suspense
-        fallback={
-          <>
-            <div className={`h-10 w-full bg-slate-200 animate-pulse mt-5`} />
-            <div className={`h-10 w-full bg-slate-200 animate-pulse mt-5`} />
-            <div className={`h-32 w-full bg-slate-200 animate-pulse mt-5`} />
-          </>
-        }
-      >
-        <SingleCategory slug={slug} base_url={base_url} path={slug_path} />
-      </Suspense>
-      <CategoryProducts
-        slug={slug}
-        allFilters={[]}
-        sortDirection={sortDirection}
-        sortField={sortField}
-        filters={filters}
-        strana={page}
+      <SingleCategory
+        data={singleCategoryInfo}
+        slug={category_id}
+        base_url={base_url}
+        path={slug_path}
+      />
+
+      <CategoryProducts slug={category_id} />
+      <CategoryLongDescription
+        longDescription={singleCategoryInfo?.basic_data?.long_description}
       />
     </>
   );

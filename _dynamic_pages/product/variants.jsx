@@ -18,10 +18,16 @@ export const Variants = ({
   let variant_items = product?.data?.variant_items; // niz svih varijanti proizvoda
   let product_slug = productSlug; // slug proizvoda koji se prikazuje
   let variant_product = null; // krajnji proizvod koji se prikazuje
+
+
   const [selected, setSelected] = useState([]); // niz selektovanih variant_options
   const [productCategory, setProductCategory] = useState("");
   const str = product.data.item.categories[0].category_path_name;
-  const beforeGreaterThan = str.split(">")[0].trim();
+  const categories = str.split(">").map((s) => s.trim());
+  const validCategories = ["Muškarci", "Žene", "Devojčice", "Dečaci"];
+  const beforeGreaterThan = categories.find((cat) =>
+    validCategories.includes(cat),
+  );
   useEffect(() => {
     if (setVariant) {
       setSelected([
@@ -365,7 +371,6 @@ export const Variants = ({
                     className={`flex gap-2 group cursor-pointer`}
                     onClick={() => {
                       setSizeModal(true);
-                      console.log("bgt", beforeGreaterThan);
                       switch (beforeGreaterThan) {
                         case "Devojčice":
                           setProductCategory("devojcice");
@@ -554,6 +559,7 @@ export const Variants = ({
                 width={600}
                 alt="Tabela mera za Žene"
               />
+              
               {/* <h3
               >
                 Muškarci

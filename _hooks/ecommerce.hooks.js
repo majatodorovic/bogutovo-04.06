@@ -21,6 +21,7 @@ import { useCartContext, userContext } from "@/_providers";
 import Image from "next/image";
 import { convertHttpToHttps } from "@/_helpers";
 import { useInvalidateBadges } from "@/_providers/functions";
+import { getFilterObject, getSortObject } from "@/_helpers/categoryFilters";
 
 //hook za prepoznavanje mobilnih uredjaja, vraca true ili false
 export const useIsMobile = () => {
@@ -628,17 +629,12 @@ export const useCategoryFilters = ({
 export const useCategoryProducts = ({
   slug,
   page,
-  setPage,
   limit,
   sort,
-  setSelectedFilters,
   filterKey,
-  setSort,
   render = true,
-  setIsLoadingMore,
-  isSection,
 }) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: [
       "categoryProducts",
       {
@@ -651,66 +647,22 @@ export const useCategoryProducts = ({
       },
     ],
     queryFn: async () => {
-      try {
-        //vadimo filtere iz URL koji su prethodno selektovani i pushovani sa router.push()
-        const filterString = filterKey ?? "::";
-        const selectedFilters_tmp = filterString
-          .split("::")
-          .filter(Boolean) // Uklanja prazne stringove iz niza (ako ih split napravi)
-          .map((filter) => {
-            const [column, selected] = filter.split("="); // Nema potrebe za ?. jer filter sigurno postoji
+      const { filterObject } = getFilterObject(filterKey);
+      const sortObject = getSortObject(sort);
 
-            // Ako selected nije definisan, koristimo prazan string
-            const selectedValues = (selected || "").split("_").filter(Boolean);
+      return await LIST(`/products/category/list/${slug}`, {
+        page: page,
+        limit: limit,
+        sort: sortObject,
+        filters: filterObject,
+        render: render,
+      }).then((res) => {
+        if (!res?.payload) {
+          throw new Error("No payload returned from API.");
+        }
 
-            return {
-              column: column || "", // Osiguravamo da column uvek postoji
-              value: {
-                selected: column?.includes("cena")
-                  ? [
-                      Number(selectedValues[0] || 0), // Podrazumevana vrednost 0 ako nema vrednosti
-                      Number(selectedValues[1] || 0), // Podrazumevana vrednost 0 ako nema vrednosti
-                    ]
-                  : selectedValues,
-              },
-            };
-          });
-
-        //radimo isto za sort
-        const sort_tmp = (sort ?? "_")?.split("_");
-        const sortObj = {
-          field: sort_tmp[0],
-          direction: sort_tmp[1],
-        };
-
-        return await LIST(
-          isSection
-            ? `/products/section/list/${slug}`
-            : `/products/category/list/${slug}`,
-          {
-            page: page,
-            limit: limit,
-            sort: sortObj,
-            filters: selectedFilters_tmp?.every(
-              (column) => column?.column !== "",
-            )
-              ? selectedFilters_tmp
-              : [],
-            render: render,
-          },
-        ).then((res) => {
-          //na kraju setujemo state za filtere i sort, da znamo koji su selektovani
-          if (selectedFilters_tmp?.every((column) => column?.column !== "")) {
-            setSelectedFilters(selectedFilters_tmp);
-          }
-          setSort(sortObj);
-          setIsLoadingMore(false);
-          setPage(page);
-          return res?.payload;
-        });
-      } catch (error) {
-        return error;
-      }
+        return res?.payload;
+      });
     },
     refetchOnWindowFocus: false,
   });
@@ -735,7 +687,7 @@ export const useProduct = ({ slug }) => {
 
 //hook za dobijanje thumb-a
 export const useProductThumb = ({ id, categoryId }) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ["productThumb", { id: id }],
     queryFn: async () => {
       return await GET(

@@ -173,6 +173,7 @@ export const Footer = () => {
                     height={30}
                     alt="Master Card"
                     className="object-scale-down"
+                    style={{ width: "50px", height: "30px" }}
                   />
                 </a>
               </div>
@@ -188,6 +189,7 @@ export const Footer = () => {
                     height={30}
                     alt="Master Card"
                     className="object-scale-down"
+                    style={{ width: "50px", height: "30px" }}
                   />
                 </a>
               </div>
@@ -203,6 +205,7 @@ export const Footer = () => {
                     height={50}
                     alt="Master Card"
                     className="object-scale-down"
+                    style={{ width: "140px", height: "50px" }}
                   />
                 </a>
               </div>
@@ -213,6 +216,7 @@ export const Footer = () => {
                   height={30}
                   alt="Master Card"
                   className="object-scale-down"
+                  style={{ width: "50px", height: "30px" }}
                 />
               </div>
               <div>
@@ -222,6 +226,7 @@ export const Footer = () => {
                   height={30}
                   alt="Master Card"
                   className="object-scale-down"
+                  style={{ width: "50px", height: "30px" }}
                 />
               </div>
               <div>
@@ -231,6 +236,7 @@ export const Footer = () => {
                   height={30}
                   alt="Master Card"
                   className="object-scale-down"
+                  style={{ width: "50px", height: "30px" }}
                 />
               </div>
               <div>
@@ -240,6 +246,7 @@ export const Footer = () => {
                   height={30}
                   alt="Master Card"
                   className="object-scale-down"
+                  style={{ width: "50px", height: "30px" }}
                 />
               </div>
             </div>

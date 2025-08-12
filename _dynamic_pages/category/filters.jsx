@@ -152,6 +152,7 @@ export const Filters = ({
               setSelectedFilters([]);
               setChangeFilters(true);
               setOpenIndex(null);
+              setPage(1)
             }}
           >
             <div className={`relative flex items-center gap-2`}>

@@ -139,7 +139,7 @@ export const BasicData = ({ slug, id, canonical }) => {
         addable_data.text = "Dodajte u korpu";
       } else {
         addable_data.addable = false;
-        addable_data.text = "Pošaljite upit";
+        addable_data.text = "Nije na stanju";
       }
       return addable_data;
     };
