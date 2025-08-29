@@ -21,7 +21,7 @@ export const Prices = ({ price, inventory, type = "default" }) => {
   };
 
   if (!data?.is_in_stock || !data.price_defined) {
-    return <p className={`text-base font-medium`}>Nije na stanju</p>;
+    return <p className={`text-base font-medium`}>Pošaljite upit</p>;
   }
 
   switch (data?.status) {

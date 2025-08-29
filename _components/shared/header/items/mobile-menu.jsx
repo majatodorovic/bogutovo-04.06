@@ -5,208 +5,183 @@ import Link from "next/link";
 
 export const MobileMenu = ({ items, landing_pages_list, pathname }) => {
   const [openMenu, setOpenMenu] = useState(false);
-  const [selected, setSelected] = useState({
-    category: null,
-    subcategory: null,
-  });
+  const [selectedCategory, setSelectedCategory] = useState({ id: null, data: [] });
+  const [activeSubcategory, setActiveSubcategory] = useState({ id: null, data: [] });
+  const [hoverCategory, setHoverCategory] = useState(null); // kontrola crvene pozadine
 
   return (
     <>
-      <span
-        onClick={() => {
-          setOpenMenu(true);
-        }}
-        className={`md:hidden`}
-      >
+      {/* Hamburger icon */}
+      <span onClick={() => setOpenMenu(true)} className="md:hidden">
         {icons.menu}
       </span>
 
+      {/* Slide-in menu */}
       <div
-        className={
-          openMenu
-            ? `translate-x-0 z-50 border-t-4 border-b-4 border-t-boa-red border-b-boa-red transition-all duration-500 w-[80%] bg-white shadow fixed h-full top-0 left-0 flex flex-col`
-            : `-translate-x-full z-50 border-t-4 border-b-4 border-t-boa-red border-b-boa-red transition-all duration-500 w-[80%] bg-white shadow fixed h-full top-0 left-0 flex flex-col`
-        }
+        className={`fixed top-0 left-0 h-full w-[80%] bg-white shadow z-50 flex flex-col transition-transform duration-500 border-t-4 border-b-4 border-t-boa-red border-b-boa-red ${
+          openMenu ? "translate-x-0" : "-translate-x-full"
+        }`}
       >
-        <div className={`flex flex-col py-3 overflow-y-auto`}>
-          {(items?.categories ?? [])?.map(
-            ({ name, slug_path, id, children }) => {
-              let has_children = children && children?.length > 0;
-              if (has_children) {
-                return (
-                  <div key={`item-${id}`}>
-                    <div
-                      onClick={() => {
-                        setSelected({
-                          category: selected.category === id ? null : id,
-                          subcategory: null,
-                        });
-                      }}
-                      key={`category-${id}`}
-                      className={`flex items-center justify-between p-2 ${
-                        selected.category === id && "bg-boa-red text-white"
-                      }`}
-                    >
-                      <span className={`text-[1.1rem] font-semibold`}>
-                        {name}
-                      </span>
-                      <span>{icons.chevron_right}</span>
-                    </div>
-                    {selected.category === id && (
-                      <div className={`flex flex-col`}>
-                        {children.map(({ name, slug_path, id, children }) => {
-                          let has_children = children && children?.length > 0;
-                          if (has_children) {
-                            return (
-                              <div key={`subitem-${id}`}>
-                                <div
-                                  onClick={() => {
-                                    setSelected({
-                                      ...selected,
-                                      subcategory:
-                                        selected.subcategory === id ? null : id,
-                                    });
-                                  }}
-                                  key={`subcategory-${id}`}
-                                  className={`flex items-center justify-between p-2 ${
-                                    selected.subcategory === id &&
-                                    "bg-[#f5f5f5]"
-                                  }`}
-                                >
-                                  <span
-                                    className={`pl-5 text-[1.1rem] font-semibold`}
-                                  >
-                                    {name}
-                                  </span>
-                                  <span>{icons.chevron_right}</span>
-                                </div>
-                                {selected.subcategory === id && (
-                                  <div className={`flex flex-col`}>
-                                    {children.map(({ name, slug_path, id }) => {
-                                      return (
-                                        <Link
-                                          onClick={() => {
-                                            setOpenMenu(false);
-                                            setSelected({
-                                              category: null,
-                                              subcategory: null,
-                                            });
-                                          }}
-                                          className={`!p-2 block text-[1.1rem] font-semibold`}
-                                          key={`subcategory-${id}`}
-                                          href={`${slug_path}`}
-                                        >
-                                          <span className={`pl-10`}>
-                                            {name}
-                                          </span>
-                                        </Link>
-                                      );
-                                    })}
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          } else {
-                            return (
-                              <Link
-                                onClick={() => {
-                                  setOpenMenu(false);
-                                  setSelected({
-                                    category: null,
-                                    subcategory: null,
-                                  });
-                                }}
-                                className={`!p-2 block text-[1.1rem] font-semibold`}
-                                key={`subcategory-${id}`}
-                                href={`${slug_path}`}
-                              >
-                                <span className={`pl-5`}>{name}</span>
-                              </Link>
-                            );
-                          }
-                        })}
-                      </div>
-                    )}
-                  </div>
-                );
-              } else {
-                return (
-                  <Link
-                    onClick={() => {
-                      setOpenMenu(false);
-                      setSelected({
-                        category: null,
-                        subcategory: null,
-                      });
-                    }}
-                    className={`!p-2 block text-[1.1rem] font-semibold ${
-                      pathname === slug_path
-                        ? "bg-boa-red text-white"
-                        : "hover:bg-boa-red hover:text-white"
-                    }`}
-                    key={`category-${id}`}
-                    href={`${slug_path}`}
-                  >
-                    {name}
-                  </Link>
-                );
-              }
-            },
-          )}
-        </div>
+        <div className="flex flex-col py-3 overflow-y-auto flex-1">
+          {(items?.categories ?? []).map((cat) => {
+            const isActive = selectedCategory.id === cat.id;
 
-        <div className={`mt-auto pt-5 flex flex-col`}>
-          <div className={`flex flex-col gap-1 !p-2 `}>
-            {landing_pages_list?.items?.map(({ id, name, slug }) => {
-              return (
-                <div key={id}>
+            return (
+              <div key={cat.id}>
+                {/* Glavna kategorija */}
+                <div
+                  className={`flex justify-between items-center w-full px-4 py-2 cursor-pointer ${
+                    hoverCategory === cat.id ? "bg-boa-red text-white" : ""
+                  }`}
+                >
                   <Link
+                    href={`/${cat.link.link_path}`}
                     onClick={() => {
                       setOpenMenu(false);
-                      setSelected({
-                        category: null,
-                        subcategory: null,
-                      });
+                      setSelectedCategory({ id: null, data: [] });
+                      setActiveSubcategory({ id: null, data: [] });
+                      setHoverCategory(null); // uklanja crvenu pozadinu
                     }}
-                    href={`promo/${slug}`}
-                    className={`text-[1rem] font-semibold text-boa-red animate-pulse`}
+                    className={`text-[1.1rem] font-semibold uppercase ${
+                      hoverCategory === cat.id ? "text-white" : "text-black"
+                    }`}
                   >
-                    {name}
+                    {cat.name}
                   </Link>
+
+                  {cat.children?.length > 0 && (
+                    <span
+                      className="cursor-pointer px-2 py-1"
+                      onClick={() => {
+                        setSelectedCategory({
+                          id: isActive ? null : cat.id,
+                          data: isActive ? [] : cat.children,
+                        });
+                        setHoverCategory(isActive ? null : cat.id); // postavlja crvenu pozadinu
+                      }}
+                    >
+                      <i
+                        className={`fa-solid fa-chevron-right transform transition-transform duration-300 ${
+                          isActive ? "rotate-90" : "rotate-0"
+                        }`}
+                      ></i>
+                    </span>
+                  )}
                 </div>
-              );
-            })}
-          </div>
-          {(items?.pages ?? [])?.map(({ title, href }, i) => {
-            return (
-              <Link
-                onClick={() => {
-                  setOpenMenu(false);
-                  setSelected({
-                    category: null,
-                    subcategory: null,
-                  });
-                }}
-                className={`odd:bg-[#f5f5f5] !p-2 block text-[1.1rem] font-semibold ${
-                  pathname === href
-                    ? "!bg-boa-red !text-white"
-                    : "hover:!bg-boa-red hover:!text-white"
-                }`}
-                key={`page-${i}`}
-                href={`${href}`}
-              >
-                {title}
-              </Link>
+
+                {/* Podkategorije */}
+                {isActive &&
+                  selectedCategory.data.map((sub) => {
+                    const isSubActive = activeSubcategory.id === sub.id;
+                    return (
+                      <div key={sub.id} className="pl-6">
+                        <div className="flex justify-between items-center py-2">
+                          <Link
+                            href={`/${sub.link.link_path}`}
+                            onClick={() => {
+                              setOpenMenu(false);
+                              setSelectedCategory({ id: null, data: [] });
+                              setActiveSubcategory({ id: null, data: [] });
+                              setHoverCategory(null);
+                            }}
+                            className="text-[1.1rem] font-semibold"
+                          >
+                            {sub.name}
+                          </Link>
+
+                          {sub.children?.length > 0 && (
+                            <span
+                              className="cursor-pointer px-2 py-1"
+                              onClick={() =>
+                                setActiveSubcategory({
+                                  id: isSubActive ? null : sub.id,
+                                  data: isSubActive ? [] : sub.children,
+                                })
+                              }
+                            >
+                              <i
+                                className={`fa-solid fa-chevron-right transform transition-transform duration-300 ${
+                                  isSubActive ? "rotate-90" : "rotate-0"
+                                }`}
+                              ></i>
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Nested subcategories */}
+                        {isSubActive &&
+                          activeSubcategory.data.map((sub2) => (
+                            <Link
+                              key={sub2.id}
+                              href={`/${sub2.link.link_path}`}
+                              onClick={() => {
+                                setOpenMenu(false);
+                                setSelectedCategory({ id: null, data: [] });
+                                setActiveSubcategory({ id: null, data: [] });
+                                setHoverCategory(null);
+                              }}
+                              className="text-[1.1rem] font-semibold pl-4 py-1 block"
+                            >
+                              {sub2.name}
+                            </Link>
+                          ))}
+                      </div>
+                    );
+                  })}
+              </div>
             );
           })}
         </div>
+
+        {/* Landing pages */}
+        <div className="mt-auto py-4 px-4 flex flex-col gap-2">
+          {landing_pages_list?.items?.map((page) => (
+            <Link
+              key={page.id}
+              href={`promo/${page.slug}`}
+              onClick={() => {
+                setOpenMenu(false);
+                setSelectedCategory({ id: null, data: [] });
+                setActiveSubcategory({ id: null, data: [] });
+                setHoverCategory(null);
+              }}
+              className="text-[1.1rem] font-semibold text-boa-red animate-pulse"
+            >
+              {page.name}
+            </Link>
+          ))}
+
+          {(items?.pages ?? []).map((page, i) => (
+            <Link
+              key={i}
+              href={page.href}
+              onClick={() => {
+                setOpenMenu(false);
+                setSelectedCategory({ id: null, data: [] });
+                setActiveSubcategory({ id: null, data: [] });
+                setHoverCategory(null);
+              }}
+              className={`text-[1.1rem] font-semibold odd:bg-[#f5f5f5] p-2 block ${
+                pathname === page.href
+                  ? "bg-boa-red text-white"
+                  : "hover:bg-boa-red hover:text-white"
+              }`}
+            >
+              {page.title}
+            </Link>
+          ))}
+        </div>
       </div>
+
+      {/* Overlay */}
       {openMenu && (
         <div
-          className={`bg-black/40 fixed top-0 left-0 w-dvw h-dvh z-40`}
+          className="fixed top-0 left-0 w-screen h-screen bg-black/40 z-40"
           onClick={() => setOpenMenu(false)}
         ></div>
       )}
     </>
   );
 };
+
+export default MobileMenu;

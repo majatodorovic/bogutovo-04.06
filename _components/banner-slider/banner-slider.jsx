@@ -11,7 +11,7 @@ export const BannerSlider = ({ banners, type = "banner" }) => {
           spaceBetween: 0,
           rewind: true,
           autoplay: {
-            delay: 3500,
+            delay: 10000,
             disableOnInteraction: false,
           },
           pagination: {
@@ -32,7 +32,7 @@ export const BannerSlider = ({ banners, type = "banner" }) => {
           spaceBetween: 0,
           rewind: true,
           autoplay: {
-            delay: 3500,
+            delay: 10000,
             disableOnInteraction: false,
           },
           pagination: {
