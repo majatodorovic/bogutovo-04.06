@@ -67,6 +67,18 @@ export const Footer = () => {
               >
                 Naše prodavnice
               </Link>
+              <Link
+                href={`/veleprodaja`}
+                className={`text-white font-light text-base block hover:text-boa-red`}
+              >
+               Veleprodaja
+              </Link>
+              <Link
+                href={`/kontakt`}
+                className={`text-white font-light text-base block hover:text-boa-red`}
+              >
+               Kontakt
+              </Link>
             </div>
             <div className={`col-span-3 md:col-span-1`}>
               <h3 className={`text-white font-semibold text-lg`}>

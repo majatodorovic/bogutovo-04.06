@@ -7,46 +7,34 @@ export const Header = () => {
   return (
     <>
       <TopHeader />
-      <header className={`sticky top-0 z-50 bg-white shadow`}>
-        <div
-          className={`border-l-[0.75rem] border-r-[0.75rem] border-l-boa-red border-r-boa-red w-full`}
-        >
-          <Layout
-            className={`flex items-center justify-between relative gap-4`}
-          >
+      <header className="sticky top-0 z-50 bg-white shadow overflow-visible">
+        <div className="border-l-[0.75rem] border-r-[0.75rem] border-l-boa-red border-r-boa-red w-full">
+          <Layout className="flex items-center justify-between relative gap-4">
             <MenuItems />
-            <Link
-              href={`/`}
-              className={`flex-shrink 2xl:max-3xl:ml-auto relative`}
-            >
-              <Image
-                priority={true}
-                src={`/images/logo-red.png`}
-                alt={`BOA Bogutovo`}
-                width={120}
-                quality={100}
-                height={50}
-                className={`relative max-md:hidden lg:max-xl:ml-[3.5rem] !select-none`}
-              />
-              <Image
-                priority={true}
-                src={`/images/logo-red.png`}
-                alt={`BOA Bogutovo`}
-                width={90}
-                quality={100}
-                height={50}
-                className={`md:hidden ml-[3rem] !select-none`}
-              />
-              <Image
-                priority={true}
-                src={`/images/boa-red.png`}
-                alt={`BOA Bogutovo`}
-                width={120}
-                quality={100}
-                height={50}
-                className={`absolute w-[68.2%] lg:max-xl:right-0 xl:w-full h-full -top-[5rem] !select-none max-md:hidden`}
-              />
-            </Link>
+            <div className="flex justify-center flex-shrink-0 relative">
+              <Link href="/" className="flex justify-center items-center relative">
+                {/* Logo za desktop */}
+                <Image
+                  priority
+                  src="/images/logo-red.png"
+                  alt="BOA Bogutovo"
+                  width={120}
+                  height={50}
+                  quality={100}
+                  className="hidden md:block !select-none"
+                />
+                {/* Logo za mobilni */}
+                <Image
+                  priority
+                  src="/images/logo-red.png"
+                  alt="BOA Bogutovo"
+                  width={90}
+                  height={50}
+                  quality={100}
+                  className="md:hidden !select-none"
+                />
+              </Link>
+            </div>
             <ActionItems />
           </Layout>
         </div>
