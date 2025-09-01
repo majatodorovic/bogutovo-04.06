@@ -25,9 +25,9 @@ export const MenuItems = () => {
     categories: [...categories],
     pages: [
       { title: "Lokacije", href: "/lokacije" },
-    
-  
      
+    
+    
     ],
   };
 
@@ -41,7 +41,7 @@ export const MenuItems = () => {
   }, [pathname]);
 
   return (
-    <nav className={` flex flex-wrap gap-2 items-center max-w-full`}>
+    <nav className={`flex gap-1 items-center max-w-[45%]`}>
       <MobileMenu
         categoriesMenu={categoriesMenu}
         setCategoriesMenu={setCategoriesMenu}

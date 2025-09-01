@@ -1,5 +1,4 @@
 "use client";
-
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { Thumb } from "@/_components/shared/thumb";
 import { useCategoryFilters, useCategoryProducts } from "@/_hooks";
@@ -19,7 +18,6 @@ export const CategoryProducts = ({ slug }) => {
   const sortKey = params?.get("sort");
 
   const { filterArr } = getFilterObject(filterKey);
-
   const sortObject = getSortObject(sortKey);
 
   const [page, setPage] = useState(pageKey > 0 ? pageKey : 1);
@@ -28,15 +26,43 @@ export const CategoryProducts = ({ slug }) => {
   const [availableFilters, setAvailableFilters] = useState([]);
   const [changeFilters, setChangeFilters] = useState(false);
   const [lastSelectedFilterKey, setLastSelectedFilterKey] = useState("");
-  const [productsPerView, setProductsPerView] = useState(5);
+  const [productsPerView, setProductsPerView] = useState(4); // default laptop
   const [tempSelectedFilters, setTempSelectedFilters] = useState([]);
 
-  // update the query parameters with the selected sort, page and filters
-  const updateURLQuery = (sort, selectedFilters, page) => {
+  // Dinamički broj kolona po širini ekrana
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1536) {
+        setProductsPerView(5); // desktop
+      } else if (window.innerWidth >= 1024) {
+        setProductsPerView(4); // laptop
+      } else if (window.innerWidth >= 768) {
+        setProductsPerView(3); // tablet
+      } else {
+        setProductsPerView(2); // mobilni (ne diramo logiku)
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Dinamički limit po broju kolona
+  const calculateLimit = (ppv) => {
+    if (ppv === 5) return 15; // desktop
+    if (ppv === 4) return 12; // laptop
+    if (ppv === 3) return 12; // tablet
+    return 6; // mobilni (ostavljeno kako je bilo)
+  };
+
+  const limit = useMemo(() => calculateLimit(productsPerView), [productsPerView]);
+
+  // update query parametara
+  const updateURLQuery = (sort, selectedFilters, page, limit) => {
     let sort_tmp;
     let filters_tmp;
     let page_tmp;
-    let limit_tmp;
 
     if (sort?.field !== "" && sort?.direction !== "") {
       sort_tmp = `${sort?.field}_${sort?.direction}`;
@@ -54,9 +80,8 @@ export const CategoryProducts = ({ slug }) => {
     }
 
     page_tmp = page;
-    limit_tmp = 12;
 
-    return { sort_tmp, filters_tmp, page_tmp, limit_tmp };
+    return { sort_tmp, filters_tmp, page_tmp, limit_tmp: limit };
   };
 
   const generateQueryString = (sort_tmp, filters_tmp, page_tmp, limit_tmp) => {
@@ -65,7 +90,6 @@ export const CategoryProducts = ({ slug }) => {
     }${sort_tmp ? `sort=${sort_tmp}` : ""}${
       sort_tmp && page_tmp ? "&" : ""
     }${page_tmp > 1 ? `strana=${page_tmp}` : ""}`;
-
     return query_string;
   };
 
@@ -74,22 +98,24 @@ export const CategoryProducts = ({ slug }) => {
       sort,
       selectedFilters,
       page,
+      limit
     );
 
     const query_string = generateQueryString(
       sort_tmp,
       filters_tmp,
       page_tmp,
-      limit_tmp,
+      limit_tmp
     );
-    router.push(query_string, { scroll: false });
-  }, [sort, selectedFilters, page]);
 
-  // get the products for the category
+    router.push(query_string, { scroll: false });
+  }, [sort, selectedFilters, page, limit]);
+
+  // fetch proizvoda
   const { data } = useCategoryProducts({
     slug,
     page: pageKey ?? 1,
-    limit: 12,
+    limit,
     sort: sortKey ?? "_",
     filterKey: filterKey,
     render: false,
@@ -112,7 +138,6 @@ export const CategoryProducts = ({ slug }) => {
     selectedFilters,
   });
 
-  // trigger the filter api on filter change
   useEffect(() => {
     mutateFilters.mutate({
       slug,
@@ -128,9 +153,7 @@ export const CategoryProducts = ({ slug }) => {
       <Suspense
         key={id}
         fallback={
-          <div
-            className={`col-span-1 w-full min-w-0 h-full aspect-2/3 bg-slate-300 animate-pulse`}
-          ></div>
+          <div className="col-span-1 w-full min-w-0 h-full aspect-2/3 bg-slate-300 animate-pulse"></div>
         }
       >
         <Thumb id={id} refreshWishlist={() => {}} category_id={slug} />
@@ -144,6 +167,8 @@ export const CategoryProducts = ({ slug }) => {
         return "grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5";
       case 4:
         return "grid-cols-2 md:grid-cols-4";
+      case 3:
+        return "grid-cols-2 md:grid-cols-3";
       case 2:
         return "grid-cols-2 md:w-[60%] mx-auto";
     }
@@ -168,8 +193,7 @@ export const CategoryProducts = ({ slug }) => {
         setLastSelectedFilterKey={setLastSelectedFilterKey}
         setChangeFilters={setChangeFilters}
       />
-
-      <FiltersMobileWrapper
+     <FiltersMobileWrapper
         selectedFilters={selectedFilters}
         availableFilters={availableFilters}
         setSelectedFilters={setSelectedFilters}
@@ -185,8 +209,8 @@ export const CategoryProducts = ({ slug }) => {
         tempSelectedFilters={tempSelectedFilters}
         setLastSelectedFilterKey={setLastSelectedFilterKey}
       />
-
-      <Layout className={`py-2 md:py-10`}>
+    
+    <Layout className={`py-2 md:py-10`}>
         <div className={`grid ${handleProductsPerView(productsPerView)} gap-5`}>
           {renderedItems}
         </div>
