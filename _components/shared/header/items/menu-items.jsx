@@ -51,7 +51,7 @@ export const MenuItems = () => {
         pathname={pathname}
       />
       <Link
-        className={`max-md:hidden text-[0.7rem] 2xl:text-[0.8rem] 3xl:text-[0.911rem] font-semibold ${
+        className={`hidden xl:flex text-[0.7rem] 2xl:text-[0.8rem] 3xl:text-[0.911rem] font-semibold ${
           pathname === "/" && !categoriesMenu?.show
             ? "item-active"
             : "item-hover"
@@ -64,7 +64,7 @@ export const MenuItems = () => {
         ({ id, name, link: { link_path: slug_path }, children }) => {
           return !children || children?.length === 0 ? (
             <Link
-              className={`max-md:hidden text-[0.7rem] 2xl:text-[0.8rem] 3xl:text-[0.911rem] font-semibold  ${
+              className={`hidden xl:flex text-[0.7rem] 2xl:text-[0.8rem] 3xl:text-[0.911rem] font-semibold  ${
                 active_items_ids.includes(id) ? "item-active" : "item-hover"
               }`}
               key={id}
@@ -83,7 +83,7 @@ export const MenuItems = () => {
                   data: categoriesMenu?.data === children ? null : children,
                 });
               }}
-              className={`max-md:hidden text-[0.7rem] 2xl:text-[0.8rem] 3xl:text-[0.911rem] cursor-pointer font-semibold  ${
+              className={`hidden xl:flex text-[0.7rem] 2xl:text-[0.8rem] 3xl:text-[0.911rem] cursor-pointer font-semibold  ${
                 (active_items_ids.includes(id) && !categoriesMenu?.show) ||
                 children === categoriesMenu?.data
                   ? "item-active"
@@ -99,7 +99,7 @@ export const MenuItems = () => {
       {(items?.pages ?? [])?.map(({ title, href }, i) => {
         return (
           <Link
-            className={`max-md:hidden text-[0.7rem] 2xl:text-[0.8rem] 3xl:text-[0.911rem] font-semibold ${
+            className={`hidden xl:flex text-[0.7rem] 2xl:text-[0.8rem] 3xl:text-[0.911rem] font-semibold ${
               pathname === href ? "item-active" : "item-hover"
             }`}
             key={`page-${i}`}
@@ -109,12 +109,14 @@ export const MenuItems = () => {
           </Link>
         );
       })}
+      <div className="hidden xl:flex">
       <CategoriesMenu
         categoriesMenu={categoriesMenu}
         setCategoriesMenu={setCategoriesMenu}
         active_items_ids={active_items_ids}
         landing_pages_list={landing_pages_list}
       />
+      </div>
     </nav>
   );
 };

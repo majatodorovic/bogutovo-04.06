@@ -12,7 +12,7 @@ export const MobileMenu = ({ items, landing_pages_list, pathname }) => {
   return (
     <>
       {/* Hamburger icon */}
-      <span onClick={() => setOpenMenu(true)} className="md:hidden">
+      <span onClick={() => setOpenMenu(true)} className="xl:hidden">
         {icons.menu}
       </span>
 

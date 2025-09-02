@@ -16,37 +16,38 @@ export const Header = () => {
           >
             <MenuItems />
             <Link
-              href={`/`}
-              className={`flex-shrink 2xl:max-3xl:ml-auto relative`}
-            >
-              <Image
-                priority={true}
-                src={`/images/logo-red.png`}
-                alt={`BOA Bogutovo`}
-                width={120}
-                quality={100}
-                height={50}
-                className={`relative max-md:hidden lg:max-xl:ml-[3.5rem] !select-none`}
-              />
-              <Image
-                priority={true}
-                src={`/images/logo-red.png`}
-                alt={`BOA Bogutovo`}
-                width={90}
-                quality={100}
-                height={50}
-                className={`md:hidden ml-[3rem] !select-none`}
-              />
-              <Image
-                priority={true}
-                src={`/images/boa-red.png`}
-                alt={`BOA Bogutovo`}
-                width={120}
-                quality={100}
-                height={50}
-                className={`absolute w-[68.2%] lg:max-xl:right-0 xl:w-full h-full -top-[5rem] !select-none max-md:hidden`}
-              />
-            </Link>
+  href={`/`}
+  className="flex-shrink relative mx-auto"
+>
+  <Image
+    priority
+    src={`/images/logo-red.png`}
+    alt={`BOA Bogutovo`}
+    width={120}
+    quality={100}
+    height={50}
+    className="relative max-md:hidden !select-none"
+  />
+  <Image
+    priority
+    src={`/images/logo-red.png`}
+    alt={`BOA Bogutovo`}
+    width={90}
+    quality={100}
+    height={50}
+    className="md:hidden !select-none"
+  />
+  <Image
+    priority
+    src={`/images/boa-red.png`}
+    alt={`BOA Bogutovo`}
+    width={120}
+    quality={100}
+    height={50}
+    className="absolute xl:w-full h-full -top-[5rem] !select-none max-md:hidden"
+  />
+</Link>
+
             <ActionItems />
           </Layout>
         </div>

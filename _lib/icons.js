@@ -156,40 +156,8 @@ export const icons = {
       />
     </svg>
   ),
-  chevron_left: (
-    <svg
-      width="1.5rem"
-      height="100%"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M15 18L9 12L15 6"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
-  chevron_right: (
-    <svg
-      width="1.5rem"
-      height="100%"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M9 18L15 12L9 6"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
+ 
+  
   close: (
     <svg
       width="1.5rem"
@@ -224,40 +192,8 @@ export const icons = {
       />
     </svg>
   ),
-  chevron_left_big: (
-    <svg
-      width="3rem"
-      height="100%"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M15 18L9 12L15 6"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
-  chevron_right_big: (
-    <svg
-      width="3rem"
-      height="100%"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M9 18L15 12L9 6"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  ),
+ 
+  
   pin: (
     <svg
       width="1.3rem"
